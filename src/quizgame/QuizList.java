@@ -55,29 +55,26 @@ public class QuizList {
         HashMap<String,String> button = new HashMap<String,String>();
       
 //System.out.println(Arrays.toString(keys));
-List<String> list = Arrays.asList(keys);
-Collections.shuffle(list);
-                                                            //System.out.println(keys);
+        //List<String> list = Arrays.asList(keys);
+        //Listを削除するため
+        List<String> list = new ArrayList<String>(Arrays.asList(keys));
+        Collections.shuffle(list);
         for(int i=0; i<keys.length; ++i)
         {
             String key = list.get(i);
-                                                            System.out.println(list.get(i));
-
             if(key == ans)
-                continue;
+              continue;
 
-            //list.remove((Integer) i);
-            //if(list.size() == 3)
-                //break;
+            list.remove(key);
+            if(list.size() == 3)
+                break;
         }
-String[] array2 =(String[])list.toArray(new String[list.size()]);
-//System.out.println(Arrays.toString(array2));
+        String[] array2 =(String[])list.toArray(new String[list.size()]);
+System.out.println(Arrays.toString(array2));
 
-        for(int num=0; num<=array2.length; ++num) {
+        for(int num=0; num<array2.length; ++num) {
             button.put(array2[num], data.get(array2[num]));
         }
-
-                                    System.out.println(button);
         return button;
     }
     
