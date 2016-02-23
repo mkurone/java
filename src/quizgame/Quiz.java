@@ -35,12 +35,22 @@ public class Quiz extends JPanel {
     JFrame quiz;
     String[] quizData;
     int quizIndex,anscounter;
-    String nowquiz,answer;
+    String nowquiz,answer,answered,ansview;
 
     
     Quiz() {
         setSize(500, 500);
         setLayout(new GridLayout(2, 1));
+        quizData = QuizList.getQuizData();
+        quizIndex = 0;
+        QuizComp(quizIndex);
+    }
+    
+    private void QuizNew() {
+        this.removeAll();//初期化
+        setSize(500, 500);
+        setLayout(new GridLayout(2, 1));
+        anscounter = 0;
         quizData = QuizList.getQuizData();
         quizIndex = 0;
         QuizComp(quizIndex);
@@ -58,30 +68,14 @@ public class Quiz extends JPanel {
         buttonData = QuizList.getAnswerButton(nowquiz);
         int i = 0;
         for(String key : buttonData.keySet()){
-                            //System.out.println(buttonData.get(key));
-
            bt[i] = new JButton(buttonData.get(key));
            bt[i].addActionListener(new BtnListener());
            bt[i].setActionCommand(key);
            i++;
         }
-        //System.out.println(Arrays.toString(bt));
-
-        //String ansv = buttonData.get(nowquiz);
-        //b1 = new JButton(ansv);
-        //b2 = new JButton("travis");
-        //b3 = new JButton("slack");
-        //b1.addActionListener(new BtnListener());
-        //b2.addActionListener(new BtnListener());
-        //b3.addActionListener(new BtnListener());
-        //panel1.add(b1);
-        //panel1.add(b2);
-        //panel1.add(b3);
         panel1.add(bt[0]);
         panel1.add(bt[1]);
         panel1.add(bt[2]);
-
-
         String path = "./src/img/" + nowquiz + ".png";
         ImageIcon img = new ImageIcon(path);
         label = new JLabel(img);
@@ -101,23 +95,53 @@ public class Quiz extends JPanel {
     }
     
     private void answerTest() {
+        this.removeAll();//初期化
         panel1 = new MyJPanel();
         panel2 = new MyJPanel();
         panel1.setLayout(new GridLayout(1, 3));
         nowquiz = QuizList.getQuiz(quizIndex);
-        b1 = new JButton("次へ");
-        b1.addActionListener(new BtnNext());
+        if(hasNext()) {
+            b1 = new JButton("つぎのもんだいへ");
+            b1.setActionCommand("next");
+            b1.addActionListener(new BtnNext());  
+        } else {
+            b1 = new JButton("回答結果を確認");
+            b1.setActionCommand("result");
+            b1.addActionListener(new BtnNext()); 
+        }
+//        b1 = new JButton("つぎのもんだいへ");
+//        b1.addActionListener(new BtnNext());
         panel1.add(b1);
         
         String path = "./src/img/" + nowquiz + ".png";
         ImageIcon img = new ImageIcon(path);
 
         label = new JLabel(img);
-        JLabel label2 = new JLabel(answer);
+        JLabel label2 = new JLabel(answered);
         panel2.add(label);
         panel2.add(label2);
         this.add(panel2, "Center");
         this.add(panel1,"South");        
+    }
+    
+    private void end() {
+        this.removeAll();//初期化
+        panel1 = new MyJPanel();
+        panel2 = new MyJPanel();
+        panel1.setLayout(new GridLayout(1, 3));
+        b1 = new JButton("もう一回");
+        b2 = new JButton("テスト");
+        b1.addActionListener(new BtnNextStart());
+        b2.addActionListener(new BtnNextStart());
+        panel1.add(b1);
+        panel1.add(b2);
+        String ansview = quizData.length + "問中" + anscounter + "問正解";
+        label = new JLabel(ansview);
+        JLabel label2 = new JLabel(answered);
+        panel2.add(label);
+        panel2.add(label2);
+        this.add(panel2, "Center");
+        this.add(panel1,"South");
     }
 
     private void next() {
@@ -143,37 +167,36 @@ class MyJPanel extends JPanel{
 
 class BtnListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
-        JButton tmp = (JButton) e.getSource();
-        String ans = tmp.getText();
-                        //System.out.println(ans);
-
+        String ans = e.getActionCommand();
         if (ans == QuizList.getAnswer(quizIndex)) {
             ++anscounter;
             label.setText("正解");
+            answered = "正解";
         }
         else {
             label.setText("不正解");
+            answered = "不正解";
         }
-
-        if(hasNext()) {
-            answer();            
-        }
-            
+        answerTest();
     }
 }
 
 class BtnNext implements ActionListener {
-    public void actionPerformed(ActionEvent a) {
-        JButton tmp = (JButton) a.getSource();
-        String ans = tmp.getText();
-        if (ans == QuizList.getAnswer(quizIndex)) {
-            label.setText("正解");
+    public void actionPerformed(ActionEvent a) {        
+        String ans = a.getActionCommand();
+        label.setText("");
+        if (ans == "next"){
+            next();
+        } else {
+            end();
         }
-        else {
-            label.setText("不正解");
+    }
+}
 
-        }
-        next();
+class BtnNextStart implements ActionListener {
+    public void actionPerformed(ActionEvent a) {
+            label.setText("もう一回");
+            QuizNew();
     }
 }
 }

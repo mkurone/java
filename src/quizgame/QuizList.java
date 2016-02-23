@@ -70,7 +70,7 @@ public class QuizList {
                 break;
         }
         String[] array2 =(String[])list.toArray(new String[list.size()]);
-System.out.println(Arrays.toString(array2));
+//System.out.println(Arrays.toString(array2));
 
         for(int num=0; num<array2.length; ++num) {
             button.put(array2[num], data.get(array2[num]));
