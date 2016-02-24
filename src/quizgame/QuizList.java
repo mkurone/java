@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Random;
 
 /**
  *
@@ -27,7 +26,10 @@ public class QuizList {
     }
     
     static String[] getQuizData() {
-        quizData = new String[] { "takoyaki", "hamburg", "nattou", "curry"};
+        String[] testData = new String[] { "takoyaki", "hamburg", "nattou", "curry"};
+        List<String> data = new ArrayList<String>(Arrays.asList(testData));
+        Collections.shuffle(data);
+        quizData = (String[])data.toArray(new String[0]);
         return quizData;
     }
     
@@ -43,12 +45,8 @@ public class QuizList {
         //回答ボタン
         HashMap<String, String> data = getAnswerData();
         String[] keys = data.keySet().toArray(new String[data.size()]);
-        Random rnd = new Random();
         HashMap<String,String> button = new HashMap<String,String>();
       
-//System.out.println(Arrays.toString(keys));
-        //List<String> list = Arrays.asList(keys);
-        //Listを削除するため
         List<String> list = new ArrayList<String>(Arrays.asList(keys));
         Collections.shuffle(list);
         for(int i=0; i<keys.length; ++i)

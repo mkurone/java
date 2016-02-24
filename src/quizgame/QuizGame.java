@@ -26,7 +26,7 @@ class QuizGame extends JFrame {
         this.setLayout(null);
         this.add(qp);
         qp.setVisible(false);
-        paneltitle.setBounds(200, 100, 100, 100);
+        paneltitle.setBounds(200, 100, 200, 100);
         this.add(paneltitle);
         btn.setBounds(150, 200, 200, 40);
         btn.addActionListener(new ActionListener(){
