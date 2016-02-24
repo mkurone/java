@@ -24,17 +24,10 @@ public class QuizList {
 
     
     QuizList() {
-        quizData = new String[] { "takoyaki", "hamburg", "nattou" };
-        answerData.put("takoyaki", "たこやき");
-        answerData.put("hamburg", "ハンバーグ");
-        answerData.put("nikuman", "にくまん");
-        answerData.put("nattou", "納豆");
-        answerData.put("sandwitch", "サンドウィッチ");
-        
     }
     
     static String[] getQuizData() {
-        quizData = new String[] { "takoyaki", "hamburg", "nattou" };
+        quizData = new String[] { "takoyaki", "hamburg", "nattou", "curry"};
         return quizData;
     }
     
@@ -49,7 +42,6 @@ public class QuizList {
     static HashMap<String, String> getAnswerButton(String ans) {
         //回答ボタン
         HashMap<String, String> data = getAnswerData();
-        //data.remove(ans);//回答データを配列から削除
         String[] keys = data.keySet().toArray(new String[data.size()]);
         Random rnd = new Random();
         HashMap<String,String> button = new HashMap<String,String>();
@@ -84,6 +76,7 @@ public class QuizList {
         answerData.put("nikuman", "にくまん");
         answerData.put("nattou", "納豆");
         answerData.put("sandwitch", "サンドウィッチ");
+        answerData.put("curry", "カレー");
         return answerData;
     }
 

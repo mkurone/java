@@ -30,7 +30,7 @@ public class Quiz extends JPanel {
     int mbutton = 0;
     int x = 10, y = 10;
     Image img = null;
-    JPanel panel1,panel2,ansp;
+    JPanel panel1,quizimg,ansp;
     ImageIcon icon;
     JFrame quiz;
     String[] quizData;
@@ -61,7 +61,7 @@ public class Quiz extends JPanel {
      */
     private void QuizComp(int quizIndex) {
         panel1 = new MyJPanel();
-        panel2 = new MyJPanel();
+        quizimg = new MyJPanel();
         panel1.setLayout(new GridLayout(1, 3));
         nowquiz = QuizList.getQuiz(quizIndex);
         HashMap<String,String> buttonData = new HashMap<String,String>();
@@ -79,9 +79,9 @@ public class Quiz extends JPanel {
         String path = "./src/img/" + nowquiz + ".png";
         ImageIcon img = new ImageIcon(path);
         label = new JLabel(img);
-        panel2.add(label);
+        quizimg.add(label);
 
-        this.add(panel2, "Center");
+        this.add(quizimg, "Center");
         this.add(panel1,"South");
     }
     
@@ -97,7 +97,7 @@ public class Quiz extends JPanel {
     private void answerTest() {
         this.removeAll();//初期化
         panel1 = new MyJPanel();
-        panel2 = new MyJPanel();
+        quizimg = new MyJPanel();
         panel1.setLayout(new GridLayout(1, 3));
         nowquiz = QuizList.getQuiz(quizIndex);
         if(hasNext()) {
@@ -109,25 +109,22 @@ public class Quiz extends JPanel {
             b1.setActionCommand("result");
             b1.addActionListener(new BtnNext()); 
         }
-//        b1 = new JButton("つぎのもんだいへ");
-//        b1.addActionListener(new BtnNext());
         panel1.add(b1);
-        
         String path = "./src/img/" + nowquiz + ".png";
         ImageIcon img = new ImageIcon(path);
 
         label = new JLabel(img);
         JLabel label2 = new JLabel(answered);
-        panel2.add(label);
-        panel2.add(label2);
-        this.add(panel2, "Center");
+        quizimg.add(label);
+        quizimg.add(label2);
+        this.add(quizimg, "Center");
         this.add(panel1,"South");        
     }
     
     private void end() {
         this.removeAll();//初期化
         panel1 = new MyJPanel();
-        panel2 = new MyJPanel();
+        quizimg = new MyJPanel();
         panel1.setLayout(new GridLayout(1, 3));
         b1 = new JButton("もう一回");
         b2 = new JButton("テスト");
@@ -138,9 +135,9 @@ public class Quiz extends JPanel {
         String ansview = quizData.length + "問中" + anscounter + "問正解";
         label = new JLabel(ansview);
         JLabel label2 = new JLabel(answered);
-        panel2.add(label);
-        panel2.add(label2);
-        this.add(panel2, "Center");
+        quizimg.add(label);
+        quizimg.add(label2);
+        this.add(quizimg, "Center");
         this.add(panel1,"South");
     }
 

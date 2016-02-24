@@ -21,21 +21,21 @@ class QuizGame extends JFrame {
     Quiz qp = new Quiz();
     static QuizGame sp;
     JButton btn = new JButton("スタート");
-    JLabel paneltitle = new JLabel("クイズ");
+    JLabel paneltitle = new JLabel("クイズをはじめる");
     public QuizGame(){
         this.setLayout(null);
         this.add(qp);
         qp.setVisible(false);
-        paneltitle.setBounds(50, 50, 400, 40);
+        paneltitle.setBounds(200, 100, 100, 100);
         this.add(paneltitle);
-        btn.setBounds(50, 50, 200, 40);
+        btn.setBounds(150, 200, 200, 40);
         btn.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 qp.setVisible(true);
             }
         });
         this.add(btn);
-        this.setTitle("クイズタイトル");
+        this.setTitle("たべものクイズ");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(500, 500);
     }
