@@ -5,12 +5,16 @@
  */
 package quizgame;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Line2D;
 import java.util.HashMap;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -26,7 +30,7 @@ public class Quiz extends JPanel {
 
     JButton b1, b2, b3, nextb;
     JButton[] bt = new JButton[3];
-    JLabel label;
+    JLabel label,label2;
     int mbutton = 0;
     int x = 20, y = 20;
     Image img = null;
@@ -35,7 +39,7 @@ public class Quiz extends JPanel {
     JFrame quiz;
     String[] quizData;
     int quizIndex,anscounter;
-    String nowquiz,answer,answered,ansview;
+    String nowquiz,answer,answered,fcolor,ansview;
 
     
     Quiz() {
@@ -91,7 +95,7 @@ public class Quiz extends JPanel {
     private void answerTest() {
         this.removeAll();//初期化
         panel1 = new MyJPanel();
-        quizimg = new MyJPanel();
+        quizimg = new MyAnserJPanel();
         panel1.setLayout(new GridLayout(1, 3));
         nowquiz = QuizList.getQuiz(quizIndex);
         if(hasNext()) {
@@ -106,11 +110,19 @@ public class Quiz extends JPanel {
         panel1.add(b1);
         String path = "./src/img/" + nowquiz + ".png";
         ImageIcon img = new ImageIcon(path);
+        JLabel label3 = new JLabel(img);
 
-        JLabel label2 = new JLabel(answered);
-        label2.setFont(new Font("Arial", Font.PLAIN, 28));
-
-        quizimg.add(label);
+//        label2 = new JLabel(answered, img);
+        label2 = new JLabel(answered, img, JLabel.CENTER);
+        label2.setFont(new Font("Dialog", Font.BOLD, 28));
+        if(fcolor=="red"){
+            label2.setForeground(Color.red);
+        }
+        else {
+            label2.setForeground(Color.black);
+        }
+        label2.setHorizontalTextPosition(JLabel.CENTER);
+        label2.setVerticalTextPosition(JLabel.CENTER);
         quizimg.add(label2);
         this.add(quizimg, "Center");
         this.add(panel1,"South");        
@@ -139,7 +151,8 @@ public class Quiz extends JPanel {
         panel1.add(b1);
         panel1.add(b2);
         String ansview = quizData.length + "問中" + anscounter + "問正解";
-        label = new JLabel(ansview);
+        label = new JLabel(ansview, JLabel.CENTER);
+        label.setFont(new Font("Dialog", Font.BOLD, 28));
         quizimg.add(label);
         this.add(quizimg, "Center");
         this.add(panel1,"South");
@@ -166,6 +179,33 @@ class MyJPanel extends JPanel{
     }
 }
 
+class MyAnserJPanel extends JPanel{
+
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D)g;
+
+        BasicStroke wideStroke = new BasicStroke(5.0f);
+        g2.setStroke(wideStroke);
+				if(fcolor=="red")
+				{
+					g2.setColor(Color.red);
+					g2.drawOval(130, 10, 230, 230);
+				}
+				else
+				{
+					//(始点x座標, 始点y座標, 終点x座標, 終点y座標)う
+					Line2D line = new Line2D.Double(150, 200, 350, 20);
+					Line2D line1 = new Line2D.Double(150, 20, 350, 200);
+					g2.setColor(Color.black);
+					g2.draw(line);
+					g2.draw(line1);
+				}
+
+        repaint();
+    }
+}
+
 class BtnListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String ans = e.getActionCommand();
@@ -173,10 +213,13 @@ class BtnListener implements ActionListener {
             ++anscounter;
             label.setText(" ");
             answered = "正解";
+            fcolor = "red";
+            
         }
         else {
             label.setText(" ");
             answered = "不正解";
+            fcolor = "black";
         }
         answerTest();
     }
@@ -185,7 +228,7 @@ class BtnListener implements ActionListener {
 class BtnNext implements ActionListener {
     public void actionPerformed(ActionEvent a) {        
         String ans = a.getActionCommand();
-        label.setText("");
+        label2.setText("");
         if (ans == "next"){
             next();
         } else {
